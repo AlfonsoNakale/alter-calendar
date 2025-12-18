@@ -28,7 +28,7 @@ export const GET: RequestHandler = async ({ params, platform }) => {
 		// Get event type
 		const eventType = await db
 			.prepare(
-				'SELECT id, name, slug, duration_minutes as duration, description, is_active, cover_image, invite_calendar FROM event_types WHERE user_id = ? AND slug = ? AND is_active = 1'
+				'SELECT id, name, slug, duration_minutes as duration, description, is_active, cover_image, invite_calendar, price, payment_link FROM event_types WHERE user_id = ? AND slug = ? AND is_active = 1'
 			)
 			.bind(user.id, slug)
 			.first<{
@@ -40,6 +40,8 @@ export const GET: RequestHandler = async ({ params, platform }) => {
 				is_active: number;
 				cover_image: string | null;
 				invite_calendar: string | null;
+				price: number | null;
+				payment_link: string | null;
 			}>();
 
 		if (!eventType) {

@@ -32,10 +32,10 @@
 					</div>
 				{/if}
 				<h1 class="text-3xl font-bold text-gray-900 mb-2">{data.user.name}</h1>
-				<p class="text-gray-600">Select a meeting type to book a time</p>
+				<p class="text-gray-600">Select a service to book</p>
 			</div>
 
-			<!-- Event Types List -->
+			<!-- Services List -->
 			{#if data.eventTypes.length > 0}
 				<div class="space-y-4">
 					{#each data.eventTypes as eventType}
@@ -51,16 +51,23 @@
 										<p class="text-gray-600 text-sm line-clamp-2">{stripHtml(eventType.description)}</p>
 									{/if}
 								</div>
-								<div class="flex items-center text-sm font-medium ml-4 px-3 py-1 rounded-full" style="background-color: {data.user.brandColor || '#3b82f6'}20; color: {data.user.brandColor || '#3b82f6'}">
-									<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											stroke-width="2"
-											d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-										></path>
-									</svg>
-									<span>{eventType.duration} min</span>
+								<div class="flex flex-col items-end gap-2 ml-4">
+									<div class="flex items-center text-sm font-medium px-3 py-1 rounded-full" style="background-color: {data.user.brandColor || '#3b82f6'}20; color: {data.user.brandColor || '#3b82f6'}">
+										<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+											></path>
+										</svg>
+										<span>{eventType.duration} min</span>
+									</div>
+									{#if eventType.price}
+										<div class="text-sm font-semibold text-gray-900">
+											N${eventType.price}
+										</div>
+									{/if}
 								</div>
 							</div>
 						</a>
@@ -81,7 +88,7 @@
 							d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
 						></path>
 					</svg>
-					<h2 class="text-xl font-semibold text-gray-900 mb-2">No Available Meeting Types</h2>
+					<h2 class="text-xl font-semibold text-gray-900 mb-2">No Available Services</h2>
 					<p class="text-gray-600">Check back later.</p>
 				</div>
 			{/if}
