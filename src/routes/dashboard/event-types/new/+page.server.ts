@@ -74,6 +74,8 @@ export const actions: Actions = {
 		const description = formData.get('description') || '';
 		const isActive = formData.get('is_active') === 'on';
 		const coverImage = formData.get('cover_image') || '';
+		const price = formData.get('price');
+		const paymentLink = formData.get('payment_link') || null;
 		const overrideCalendarSettings = formData.get('override_calendar_settings') === 'on';
 		// Only use custom values if override is enabled, otherwise null (use global)
 		const availabilityCalendars = overrideCalendarSettings ? (formData.get('availability_calendars') || 'both') : null;
@@ -113,10 +115,22 @@ export const actions: Actions = {
 			// Insert new event type
 			await db
 				.prepare(
-					`INSERT INTO event_types (user_id, name, slug, duration_minutes, description, is_active, cover_image, availability_calendars, invite_calendar, created_at)
-					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`
+					`INSERT INTO event_types (user_id, name, slug, duration_minutes, description, is_active, cover_image, price, payment_link, availability_calendars, invite_calendar, created_at)
+					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`
 				)
-				.bind(userId, name, slugStr, parseInt(duration.toString()), description, isActive ? 1 : 0, coverImage, availabilityCalendars, inviteCalendar)
+				.bind(
+					userId,
+					name,
+					slugStr,
+					parseInt(duration.toString()),
+					description,
+					isActive ? 1 : 0,
+					coverImage,
+					price ? parseFloat(price.toString()) : null,
+					paymentLink,
+					availabilityCalendars,
+					inviteCalendar
+				)
 				.run();
 
 			throw redirect(302, '/dashboard');

@@ -6,6 +6,7 @@
 		duration: number;
 		description?: string | null;
 		is_active: boolean;
+		price?: number | null;
 	}
 
 	interface Props {
@@ -17,12 +18,12 @@
 
 <div>
 	<div class="flex justify-between items-center mb-4">
-		<h2 class="text-xl font-bold text-gray-900">Event Types</h2>
+		<h2 class="text-xl font-bold text-gray-900">Services</h2>
 		<a
 			href="/dashboard/event-types/new"
 			class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm"
 		>
-			+ New Event Type
+			+ New Service
 		</a>
 	</div>
 
@@ -33,7 +34,12 @@
 					<div class="flex justify-between items-start mb-2">
 						<div>
 							<h3 class="font-semibold text-gray-900">{eventType.name}</h3>
-							<p class="text-sm text-gray-600">{eventType.duration} minutes</p>
+							<p class="text-sm text-gray-600">
+								{eventType.duration} minutes
+								{#if eventType.price}
+									• N${eventType.price}
+								{/if}
+							</p>
 						</div>
 						<span
 							class="px-2 py-1 text-xs rounded-full {eventType.is_active
@@ -66,12 +72,12 @@
 			{/each}
 		{:else}
 			<div class="bg-white rounded-lg shadow-sm p-8 text-center border border-gray-200">
-				<p class="text-gray-600 mb-4">No event types yet</p>
+				<p class="text-gray-600 mb-4">No services yet</p>
 				<a
 					href="/dashboard/event-types/new"
 					class="inline-block px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
 				>
-					Create Your First Event Type
+					Create Your First Service
 				</a>
 			</div>
 		{/if}

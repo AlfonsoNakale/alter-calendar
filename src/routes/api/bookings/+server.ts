@@ -83,9 +83,9 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 		}
 
 		const eventType = await db
-			.prepare('SELECT id, name, duration_minutes as duration, description, invite_calendar FROM event_types WHERE user_id = ? AND slug = ? AND is_active = 1')
+			.prepare('SELECT id, name, duration_minutes as duration, description, invite_calendar, price, payment_link FROM event_types WHERE user_id = ? AND slug = ? AND is_active = 1')
 			.bind(user.id, eventSlug)
-			.first<{ id: string; name: string; duration: number; description: string; invite_calendar: string | null }>();
+			.first<{ id: string; name: string; duration: number; description: string; invite_calendar: string | null; price: number | null; payment_link: string | null }>();
 
 		if (!eventType) {
 			throw error(404, 'Event type not found or inactive');
@@ -274,7 +274,9 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 					timeFormat,
 					timezone: timezone || 'UTC',
 					brandColor: user.brand_color || undefined,
-					attendeeNotes: notes || undefined
+					attendeeNotes: notes || undefined,
+					price: eventType.price,
+					paymentLink: eventType.payment_link
 				};
 
 				if (confirmationEnabled) {

@@ -19,6 +19,7 @@
 		selectedSlot: { start: string; end: string } | null;
 		brandColor: string;
 		formatTime: (isoStr: string) => string;
+		extraDetails?: import('svelte').Snippet;
 	}
 
 	let {
@@ -27,7 +28,8 @@
 		selectedDate,
 		selectedSlot,
 		brandColor,
-		formatTime
+		formatTime,
+		extraDetails
 	}: Props = $props();
 
 	// Sanitize event description to prevent XSS (only in browser, SSR uses raw since admin-entered)
@@ -87,6 +89,7 @@
 				</svg>
 				<span>{meetingLabel}</span>
 			</div>
+			{@render extraDetails?.()}
 		</div>
 
 		{#if eventType?.description}

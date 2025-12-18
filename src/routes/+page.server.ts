@@ -24,7 +24,7 @@ export const load: PageServerLoad = async ({ platform }) => {
 	// Get active event types
 	const eventTypes = await db
 		.prepare(
-			`SELECT id, name, slug, duration_minutes as duration, description, is_active
+			`SELECT id, name, slug, duration_minutes as duration, description, is_active, price
 			FROM event_types
 			WHERE user_id = ? AND is_active = 1
 			ORDER BY name ASC`
@@ -37,6 +37,7 @@ export const load: PageServerLoad = async ({ platform }) => {
 			duration: number;
 			description: string;
 			is_active: number;
+			price: number | null;
 		}>();
 
 	return {

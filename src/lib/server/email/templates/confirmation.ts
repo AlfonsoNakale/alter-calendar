@@ -52,6 +52,10 @@ export function generateBookingEmail(data: BookingEmailData): string {
 		? generateActionButton(data.meetingUrl, meetingLabel, brandColor)
 		: '';
 
+	const paymentButton = data.paymentLink
+		? generateActionButton(data.paymentLink, `Pay N$${data.price}`, brandColor)
+		: '';
+
 	const managementLinks = generateManagementLinks(rescheduleUrl, cancelUrl, brandColor);
 
 	const bodyContent = `
@@ -65,6 +69,7 @@ export function generateBookingEmail(data: BookingEmailData): string {
 		${meetingDetails}
 		${attendeeNotes}
 		${actionButton}
+		${paymentButton}
 		${managementLinks}
 
 		<p style="margin: 0; color: #6b7280; font-size: 14px; line-height: 20px;">
@@ -104,8 +109,10 @@ Event: ${data.eventName}
 ${data.eventDescription ? `Description: ${data.eventDescription}` : ''}
 Time: ${formatDateTime(data.startTime)} - ${formatDateTime(data.endTime)}
 ${data.meetingUrl ? `Location: ${data.meetingUrl}` : ''}
+${data.price ? `Price: N$${data.price}` : ''}
 
 ${data.meetingUrl ? `Join Meeting: ${data.meetingUrl}` : ''}
+${data.paymentLink ? `Pay Here: ${data.paymentLink}` : ''}
 
 MANAGE YOUR BOOKING
 Reschedule: ${rescheduleUrl}

@@ -45,7 +45,7 @@ export const load: PageServerLoad = async (event) => {
 	const eventType = await db
 		.prepare(
 			`SELECT id, name, slug, duration_minutes as duration, description, is_active, cover_image,
-				availability_calendars, invite_calendar
+				price, payment_link, availability_calendars, invite_calendar
 			FROM event_types
 			WHERE id = ? AND user_id = ?`
 		)
@@ -58,6 +58,8 @@ export const load: PageServerLoad = async (event) => {
 			description: string;
 			is_active: number;
 			cover_image: string | null;
+			price: number | null;
+			payment_link: string | null;
 			availability_calendars: string | null;
 			invite_calendar: string | null;
 		}>();
@@ -108,6 +110,8 @@ export const actions: Actions = {
 		const description = formData.get('description') || '';
 		const isActive = formData.get('is_active') === 'on';
 		const coverImage = formData.get('cover_image') || null;
+		const price = formData.get('price');
+		const paymentLink = formData.get('payment_link') || null;
 		const overrideCalendarSettings = formData.get('override_calendar_settings') === 'on';
 		// Only use custom values if override is enabled, otherwise null (use global)
 		const availabilityCalendars = overrideCalendarSettings ? (formData.get('availability_calendars') || 'both') : null;
@@ -151,7 +155,7 @@ export const actions: Actions = {
 				.prepare(
 					`UPDATE event_types
 					SET name = ?, slug = ?, duration_minutes = ?, description = ?, is_active = ?, cover_image = ?,
-						availability_calendars = ?, invite_calendar = ?
+						price = ?, payment_link = ?, availability_calendars = ?, invite_calendar = ?
 					WHERE id = ? AND user_id = ?`
 				)
 				.bind(
@@ -161,8 +165,10 @@ export const actions: Actions = {
 					description.toString(),
 					isActive ? 1 : 0,
 					coverImage ? coverImage.toString() : null,
-					availabilityCalendars.toString(),
-					inviteCalendar.toString(),
+					price ? parseFloat(price.toString()) : null,
+					paymentLink,
+					availabilityCalendars,
+					inviteCalendar,
 					eventTypeId,
 					userId
 				)

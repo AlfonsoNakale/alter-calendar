@@ -11,6 +11,8 @@
 	let description = $state(data.eventType.description || '');
 	let isActive = $state(data.eventType.is_active === 1);
 	let coverImage = $state(data.eventType.cover_image || '');
+	let price = $state(data.eventType.price || '');
+	let paymentLink = $state(data.eventType.payment_link || '');
 	let saving = $state(false);
 	let uploadingCover = $state(false);
 
@@ -127,7 +129,7 @@
 				<a href="/dashboard" class="text-gray-600 hover:text-gray-900">
 					← Back to Dashboard
 				</a>
-				<h1 class="text-2xl font-bold text-gray-900">Edit Event Type</h1>
+				<h1 class="text-2xl font-bold text-gray-900">Edit Service</h1>
 			</div>
 		</div>
 	</header>
@@ -145,7 +147,7 @@
 					<!-- Event Name -->
 					<div>
 						<label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-							Event Name *
+							Service Name *
 						</label>
 						<input
 							type="text"
@@ -153,7 +155,7 @@
 							name="name"
 							bind:value={name}
 							required
-							placeholder="e.g., 30 Minute Meeting"
+							placeholder="e.g., 30 Minute Session"
 							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 						/>
 					</div>
@@ -206,9 +208,49 @@
 						</label>
 						<SimpleWysiwyg
 							bind:value={description}
-							placeholder="Describe what this meeting is for..."
+							placeholder="Describe this service..."
 						/>
 						<input type="hidden" name="description" value={description} />
+					</div>
+
+					<!-- Price -->
+					<div>
+						<label for="price" class="block text-sm font-medium text-gray-700 mb-2">
+							Price (N$)
+						</label>
+						<div class="relative">
+							<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+								<span class="text-gray-500 sm:text-sm">N$</span>
+							</div>
+							<input
+								type="number"
+								id="price"
+								name="price"
+								bind:value={price}
+								step="0.01"
+								min="0"
+								placeholder="0.00"
+								class="w-full pl-10 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+							/>
+						</div>
+					</div>
+
+					<!-- Payment Link -->
+					<div>
+						<label for="payment_link" class="block text-sm font-medium text-gray-700 mb-2">
+							Payment Link
+						</label>
+						<input
+							type="url"
+							id="payment_link"
+							name="payment_link"
+							bind:value={paymentLink}
+							placeholder="e.g., https://buy.stripe.com/..."
+							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+						/>
+						<p class="text-xs text-gray-500 mt-1">
+							Paste a link to your payment page (Stripe, PayPal, etc). This will be included in the booking confirmation email.
+						</p>
 					</div>
 
 					<!-- Cover Image -->
@@ -366,7 +408,7 @@
 							class="h-4 w-4 text-blue-600 rounded border-gray-300"
 						/>
 						<label for="is_active" class="ml-2 text-sm text-gray-700">
-							Active (allow people to book this event type)
+							Active (allow people to book this service)
 						</label>
 					</div>
 

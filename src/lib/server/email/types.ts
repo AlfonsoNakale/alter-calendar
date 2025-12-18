@@ -22,6 +22,8 @@ export interface BookingEmailData {
 	timezone?: string;
 	brandColor?: string;
 	attendeeNotes?: string | null;
+	price?: number | null;
+	paymentLink?: string | null;
 }
 
 export interface RescheduleEmailData extends BookingEmailData {
